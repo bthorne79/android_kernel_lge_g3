@@ -142,14 +142,17 @@ int snd_hax_reg_access(unsigned int reg)
 
 	switch (reg) {
 
+ access control as well
 		case TAIKO_A_RX_HPH_L_GAIN:
 		case TAIKO_A_RX_HPH_R_GAIN:
 		case TAIKO_A_RX_HPH_L_STATUS:
 		case TAIKO_A_RX_HPH_R_STATUS:
+
 			if (snd_ctrl_locked > 1)
 				ret = 0;
 			break;
 
+ access control as well
 		case TAIKO_A_CDC_RX1_VOL_CTL_B2_CTL:
 		case TAIKO_A_CDC_RX2_VOL_CTL_B2_CTL:
 		case TAIKO_A_CDC_RX3_VOL_CTL_B2_CTL:
