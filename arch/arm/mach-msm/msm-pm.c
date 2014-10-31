@@ -349,17 +349,17 @@ mode_sysfs_add_cpu_exit:
 	return ret;
 }
 
-int msm_pm_mode_sysfs_add(void)
+int msm_pm_mode_sysfs_add(const char *pm_modname)
 {
 	struct kobject *module_kobj;
 	struct kobject *modes_kobj;
 	unsigned int cpu;
 	int ret;
 
-	module_kobj = kset_find_obj(module_kset, KBUILD_MODNAME);
+	module_kobj = kset_find_obj(module_kset, pm_modname);
 	if (!module_kobj) {
 		pr_err("%s: cannot find kobject for module %s\n",
-			__func__, KBUILD_MODNAME);
+			__func__, pm_modname);
 		ret = -ENOENT;
 		goto mode_sysfs_add_exit;
 	}
@@ -382,6 +382,7 @@ int msm_pm_mode_sysfs_add(void)
 mode_sysfs_add_exit:
 	return ret;
 }
+
 
 static inline void msm_arch_idle(void)
 {
@@ -1030,7 +1031,7 @@ static int msm_pm_init(void)
 		MSM_PM_STAT_IDLE_FAILED_POWER_COLLAPSE,
 		MSM_PM_STAT_SUSPEND,
 	};
-	msm_pm_mode_sysfs_add();
+	msm_pm_mode_sysfs_add(KBUILD_MODNAME);
 	msm_pm_add_stats(enable_stats, ARRAY_SIZE(enable_stats));
 
 	return 0;
