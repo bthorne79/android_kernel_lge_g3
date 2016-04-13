@@ -199,6 +199,12 @@ struct cs_dbs_tuners {
 struct dk_dbs_tuners {
 	unsigned int ignore_nice_load;
 	unsigned int sampling_rate;
+	unsigned int input_boost_freq;
+	unsigned int input_boost_duration;
+	unsigned int twostep_threshold;
+	unsigned int min_load;
+	unsigned int twostep_counter;
+	u64 twostep_time;
 };
 
 /* Common Governor data across policies */
