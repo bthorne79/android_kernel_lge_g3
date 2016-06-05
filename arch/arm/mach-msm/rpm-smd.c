@@ -1429,5 +1429,3 @@ int __init msm_rpm_driver_init(void)
 }
 EXPORT_SYMBOL(msm_rpm_driver_init);
 late_initcall(msm_rpm_driver_init);
-Status API Training Shop Blog About
-©
