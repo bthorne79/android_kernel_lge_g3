@@ -88,12 +88,12 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
 	  governor. If unsure have a look at the help section of the
 	  driver. Fallback governor will be the performance governor.
 
-config CPU_FREQ_DEFAULT_GOV_ELEMENTALX
-	bool "elementalx"
-	select CPU_FREQ_GOV_ELEMENTALX
+config CPU_FREQ_DEFAULT_GOV_KRAKEN
+	bool "kraken"
+	select CPU_FREQ_GOV_KRAKEN
 	select CPU_FREQ_GOV_PERFORMANCE
 	help
-	  Use the CPUFreq governor 'elementalx' as default.
+	  Use the CPUFreq governor 'kraken' as default.
 
 config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
 	bool "conservative"
@@ -191,14 +191,14 @@ config CPU_FREQ_GOV_ONDEMAND
 
 	  If in doubt, say N.
 
-config CPU_FREQ_GOV_ELEMENTALX
-	tristate "'elementalx' cpufreq policy governor"
+config CPU_FREQ_GOV_KRAKEN
+	tristate "'kraken' cpufreq policy governor"
 	select CPU_FREQ_TABLE
 	help
-	  'elementalx' - This driver adds a dynamic cpufreq policy governor.
+	  'kraken' - This driver adds a dynamic cpufreq policy governor.
 
 	  To compile this driver as a module, choose M here: the
-	  module will be called cpufreq_elementalx.
+	  module will be called cpufreq_kraken.
 
 	  For details, take a look at linux/Documentation/cpu-freq.
 
@@ -290,7 +290,6 @@ config SUSPEND_BOOSTER
 	help
 	  Samsung TN PowerManagement Feature.
 
->>>>>>> fbd222c... Wheatley Governor.
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86

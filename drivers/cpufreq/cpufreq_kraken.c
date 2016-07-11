@@ -1,5 +1,5 @@
 /*
- *  drivers/cpufreq/cpufreq_elementalx.c
+ *  drivers/cpufreq/cpufreq_kraken.c
  *
  *  Copyright (C)  2001 Russell King
  *            (C)  2003 Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>.
@@ -51,7 +51,7 @@ static int g_count = 0;
 #define MIN_SAMPLING_RATE_RATIO			(2)
 
 static unsigned int min_sampling_rate;
-static unsigned int skip_elementalx = 0;
+static unsigned int skip_kraken = 0;
 
 #define LATENCY_MULTIPLIER			(1000)
 #define MIN_LATENCY_MULTIPLIER			(100)
@@ -61,11 +61,11 @@ static void do_dbs_timer(struct work_struct *work);
 static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 				unsigned int event);
 
-#ifndef CONFIG_CPU_FREQ_DEFAULT_GOV_ELEMENTALX
+#ifndef CONFIG_CPU_FREQ_DEFAULT_GOV_KRAKEN
 static
 #endif
-struct cpufreq_governor cpufreq_gov_elementalx = {
-       .name                   = "elementalx",
+struct cpufreq_governor cpufreq_gov_kraken = {
+       .name                   = "kraken",
        .governor               = cpufreq_governor_dbs,
        .max_transition_latency = TRANSITION_LATENCY_LIMIT,
        .owner                  = THIS_MODULE,
@@ -541,7 +541,7 @@ static struct attribute *dbs_attributes[] = {
 
 static struct attribute_group dbs_attr_group = {
 	.attrs = dbs_attributes,
-	.name = "elementalx",
+	.name = "kraken",
 };
 
 
@@ -983,7 +983,7 @@ static void do_dbs_timer(struct work_struct *work)
 
 	mutex_lock(&dbs_info->timer_mutex);
 
-	if (skip_elementalx)
+	if (skip_kraken)
 		goto sched_wait;
 	
 	dbs_info->sample_type = DBS_NORMAL_SAMPLE;
@@ -1137,7 +1137,7 @@ static struct input_handler dbs_input_handler = {
 	.event		= dbs_input_event,
 	.connect	= dbs_input_connect,
 	.disconnect	= dbs_input_disconnect,
-	.name		= "cpufreq_elementalx",
+	.name		= "cpufreq_kraken",
 	.id_table	= dbs_ids,
 };
 
@@ -1330,14 +1330,14 @@ static int __init cpufreq_gov_dbs_init(void)
 			per_cpu(up_task, i) = pthread;
 		}
 	}
-	return cpufreq_register_governor(&cpufreq_gov_elementalx);
+	return cpufreq_register_governor(&cpufreq_gov_kraken);
 }
 
 static void __exit cpufreq_gov_dbs_exit(void)
 {
 	unsigned int i;
 
-	cpufreq_unregister_governor(&cpufreq_gov_elementalx);
+	cpufreq_unregister_governor(&cpufreq_gov_kraken);
 	for_each_possible_cpu(i) {
 		struct cpu_dbs_info_s *this_dbs_info =
 			&per_cpu(od_cpu_dbs_info, i);
@@ -1352,10 +1352,10 @@ static void __exit cpufreq_gov_dbs_exit(void)
 MODULE_AUTHOR("Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>");
 MODULE_AUTHOR("Alexey Starikovskiy <alexey.y.starikovskiy@intel.com>");
 MODULE_AUTHOR("flar2 <asegaert@gmail.com>");
-MODULE_DESCRIPTION("'cpufreq_elementalx' - multiphase dynamic cpufreq governor");
+MODULE_DESCRIPTION("'cpufreq_kraken' - multiphase dynamic cpufreq governor");
 MODULE_LICENSE("GPL");
 
-#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_ELEMENTALX
+#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_KRAKEN
 fs_initcall(cpufreq_gov_dbs_init);
 #else
 module_init(cpufreq_gov_dbs_init);
