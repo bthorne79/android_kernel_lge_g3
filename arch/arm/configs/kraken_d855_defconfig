@@ -704,6 +704,7 @@ CONFIG_CMDLINE=""
 #
 # CPU Power Management
 #
+CONFIG_CPU_VOLTAGE_TABLE=y
 
 #
 # CPU Frequency scaling
