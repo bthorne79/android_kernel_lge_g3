@@ -1,0 +1,99 @@
+on enable-gpu-tweaks
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
+    write /sys/class/devfreq/fdb00000.qcom,kgsl-3d0/min_freq 27000000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 657500000
+    write /sys/class/devfreq/fdb00000.qcom,kgsl-3d0/max_freq 657500000
+
+
+on enable-display-tweaks
+    # Gamma settings for better LG G3 contrast
+    write /sys/devices/platform/kcal_ctrl.0/kcal_enable 1
+    write /sys/devices/platform/kcal_ctrl.0/kcal "245 245 256"
+    write /sys/devices/platform/kcal_ctrl.0/kcal_sat 275
+    write /sys/devices/platform/kcal_ctrl.0/kcal_val 256
+    write /sys/devices/platform/kcal_ctrl.0/kcal_cont 256
+
+
+on enable-mem-tweaks
+    write /sys/class/devfreq/qcom,cpubw.41/governor cpubw_hwmon
+    write /sys/class/devfreq/qcom,cpubw.41/polling_interval 10
+    write /sys/class/devfreq/qcom,cpubw.41/cpubw_hwmon/bw_step 80
+    write /sys/class/devfreq/qcom,cpubw.41/cpubw_hwmon/decay_rate 20
+    write /sys/class/devfreq/qcom,cpubw.41/cpubw_hwmon/guard_band_mbps 0
+    write /sys/class/devfreq/qcom,cpubw.41/cpubw_hwmon/io_percent 2
+    write /sys/class/devfreq/qcom,cpubw.41/cpubw_hwmon/tolerance_percent 10
+
+
+on enable-interactive-tweaks
+    stop mpdecision
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1200000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 70
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "30 300000:40 450000:50 700000:60 900000:70 1200000:80 1400000:90 1600000:95 1800000:97 2000000:99"
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack -1
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 10000
+    write /sys/module/cpu_boost/parameters/boost_ms 0
+    write /sys/module/cpu_boost/parameters/input_boost_ms 0
+    write /sys/module/cpu_boost/parameters/input_boost_freq 960000
+    write /sys/module/cpu_boost/parameters/sync_threshold 0
+
+    start mpdecision
+
+
+on disable-extra-logging
+    write /sys/devices/fe12f000.slim/debug_mask 0
+    write /sys/module/smd/parameters/debug_mask 0
+    write /sys/module/smem/parameters/debug_mask 0
+    write /sys/module/rpm_regulator_smd/parameters/debug_mask 0
+    write /sys/module/ipc_router/parameters/debug_mask 0
+    write /sys/module/event_timer/parameters/debug_mask 0
+    write /sys/module/alarm/parameters/debug_mask 0
+    write /sys/module/smp2p/parameters/debug_mask 0
+    write /sys/module/rpm_smd/parameters/debug_mask 0
+    write /sys/module/smd_pkt/parameters/debug_mask 0
+    write /sys/module/xt_qtaguid/parameters/debug_mask 0
+    write /sys/module/qpnp_regulator/parameters/debug_mask 0
+    write /sys/module/binder/parameters/debug_mask 0
+    write /sys/module/msm_show_resume_irq/parameters/debug_mask 0
+    write /sys/module/alarm_dev/parameters/debug_mask 0
+    write /sys/module/mpm_of/parameters/debug_mask 0
+    write /sys/module/msm_pm/parameters/debug_mask 0
+    write /sys/module/spm_v2/parameters/debug_mask 0
+    write /sys/module/lpm_levels/parameters/debug_mask 0
+    write /sys/module/ipc_router_smd_xprt/parameters/debug_mask 0
+    write /sys/module/lge_touch_core/parameters/debug_mask 0
+
+
+on mpdecision-setup
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    chmod 0444 /sys/devices/system/cpu/cpu0/online
+    chmod 0444 /sys/devices/system/cpu/cpu2/online
+
+
+on property:sys.boot_completed=1
+    trigger mpdecision-setup
+    trigger enable-mem-tweaks
+    trigger enable-interactive-tweaks
+
+
+on enable-low-power
+    trigger enable-mem-tweaks
+    trigger enable-interactive-tweaks
+
+
+on boot
+    trigger disable-extra-logging
+    trigger enable-display-tweaks
+    trigger enable-gpu-tweaks
+

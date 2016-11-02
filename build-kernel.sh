@@ -222,7 +222,7 @@ function check_filesize() {
 	minsize=3
 	maxsize=18
 	cd $ZIP_MOVE
-	file="KraKenKernel_""$REV""_""$VARIANT""_""$KVER"".zip"
+	file="Kraken_Nougat_""$REV""_""$VARIANT""_""$KVER"".zip"
 	actualsize=$(du -k "$file" | cut -f 1)
 	if [ $actualsize -ge $maxsize ]; then
     echo size is over $maxsize kilobytes
@@ -401,7 +401,7 @@ function menu_settings() {
 		echo "Test1: $TestBuild"
 		if [ $TestBuild == '1' ]; then
 			echo "This worked:" 
-			#cp KraKenKernel_"$REV"_"$VARIANT"_"$KVER".zip $COPY_ZIP
+			#cp Kraken_Nougat_"$REV"_"$VARIANT"_"$KVER".zip $COPY_ZIP
 			else
 			echo "Didnt Work" 
 		fi
@@ -467,9 +467,9 @@ function make_dtb {
 function make_zip {
 		cp -vr $RAMDISK_KraKen_DIR $REPACK_DIR
 		cd $REPACK_DIR
-		zip -r9 KraKenKernel_"$REV"_"$VARIANT"_"$KVER".zip *
-		mv KraKenKernel_"$REV"_"$VARIANT"_"$KVER".zip $ZIP_MOVE
-		rm -rf KraKenKernel_"$REV"_"$VARIANT"_"$KVER".zip
+		zip -r9 Kraken_Nougat_"$REV"_"$VARIANT"_"$KVER".zip *
+		mv Kraken_Nougat_"$REV"_"$VARIANT"_"$KVER".zip $ZIP_MOVE
+		rm -rf Kraken_Nougat_"$REV"_"$VARIANT"_"$KVER".zip
 		cd $KERNEL_DIR
 }
 
@@ -481,7 +481,7 @@ function finished_build {
 	check_filesize
 		if [ -e $ZIMAGE_DIR/$KERNEL ]; then
 	dialog --title  "Build Finished"  --backtitle  "Build Finished" \
-	--infobox  "KraKenKernel_'$REV'_'$VARIANT'_'$KVER'.zip \n\
+	--infobox  "Kraken_Nougat_'$REV'_'$VARIANT'_'$KVER'.zip \n\
 	Created Successfully..\n\
 	FileSize: $actualsize kb \n\
     Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds." 7 65 ; read 
@@ -490,7 +490,7 @@ dialog --title  "Build Not Completed"  --backtitle  "Build Had Errors" \
 	--infobox  "Build Aborted Do to errors, zImage doesnt exist,\n\
 	Unsuccessful Build.." 7 65 ; read
 	cd $ZIP_MOVE
-	rm -rf KraKenKernel_"$REV"_"$VARIANT"_"$KVER".zip
+	rm -rf Kraken_Nougat_"$REV"_"$VARIANT"_"$KVER".zip
 	cd $KERNEL_DIR
 	fi
 }
@@ -499,7 +499,7 @@ DATE_START=$(date +"%s")
 
 function build_kernels {
 echo -e "${green}"
-echo "KraKenKernel Creation Script:"
+echo "Kraken_Nougat Creation Script:"
 echo -e "${restore}"
 
 ## Build Menu ##
@@ -638,7 +638,7 @@ main() {
 
 echo -e "${green}"
 echo "--------------------------------------------------------"
-echo "KraKenKernel_'$REV'_'$VARIANT'_'$KVER'-signed.zip"
+echo "Kraken_Nougat_'$REV'_'$VARIANT'_'$KVER'-signed.zip"
 echo "Created Successfully.."
 echo "Build Completed in:"
 echo "--------------------------------------------------------"
